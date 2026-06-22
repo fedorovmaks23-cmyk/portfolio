@@ -38,17 +38,39 @@ function localNameFor(url) {
   return `${hash}${ext}`;
 }
 
-async function download(url, dest) {
-  if (await exists(dest)) return 'cached';
-  const res = await fetch(url, {
+// Варианты URL для скачивания. Framer отдаёт 400, если запрошенный размер
+// слишком большой (напр. width=3975). Поэтому если оригинальная ссылка не
+// качается — пробуем умеренный размер (2048px, отличное качество для веба),
+// затем исходник без параметров.
+function candidates(url) {
+  const base = url.split('?')[0];
+  return [...new Set([url, base + '?width=2048', base + '?scale-down-to=2048', base])];
+}
+
+async function fetchOk(u) {
+  const res = await fetch(u, {
     headers: {
       'User-Agent': 'Mozilla/5.0',
       'Referer': 'https://proud-closet-379508.framer.app/',
     },
   });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  await pipeline(Readable.fromWeb(res.body), createWriteStream(dest));
-  return 'downloaded';
+  return res;
+}
+
+async function download(url, dest) {
+  if (await exists(dest)) return 'cached';
+  let lastErr;
+  for (const u of candidates(url)) {
+    try {
+      const res = await fetchOk(u);
+      await pipeline(Readable.fromWeb(res.body), createWriteStream(dest));
+      return 'downloaded';
+    } catch (e) {
+      lastErr = e;
+    }
+  }
+  throw lastErr;
 }
 
 async function main() {
