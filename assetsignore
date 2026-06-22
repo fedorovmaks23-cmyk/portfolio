@@ -5,3 +5,9 @@ scripts
 README.md
 wrangler.jsonc
 .assetsignore
+
+# Видео не публикуем как файлы Cloudflare (лимит 25 МБ/файл) —
+# в кейсах они подключены по ссылке с Framer и играют в браузере.
+*.mp4
+*.webm
+*.mov
