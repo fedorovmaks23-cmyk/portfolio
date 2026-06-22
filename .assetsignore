@@ -1,0 +1,11 @@
+.git
+.github
+chats
+scripts
+README.md
+wrangler.jsonc
+.assetsignore
+
+*.mp4
+*.webm
+*.mov
