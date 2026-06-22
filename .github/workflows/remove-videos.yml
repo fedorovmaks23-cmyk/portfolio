@@ -1,0 +1,29 @@
+name: Remove video assets
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  clean:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Delete video files
+        run: |
+          find project/assets -type f \( -iname '*.mp4' -o -iname '*.webm' -o -iname '*.mov' \) -print -delete || true
+
+      - name: Commit removal
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --staged --quiet; then
+            echo "Видеофайлов не найдено."
+          else
+            git commit -m "Remove video assets (Cloudflare 25MB limit)"
+            git push
+          fi
