@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GAMLY — Case Study — Maxim Fedorov</title>
+  <meta name="description" content="GAMLY UX/UI case study by Maxim Fedorov.">
+  <meta name="theme-color" content="#ece7df">
+  <link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  html,body{margin:0;padding:0;}
+  body{background:#ece7df;color:#17150f;overflow-x:hidden;cursor:none;font-family:'Hanken Grotesk',sans-serif;-webkit-font-smoothing:antialiased;}
+  a{cursor:none;}
+  img{display:block;max-width:100%;}
+  ::selection{background:#2b29ff;color:#ece7df;}
+  @media (pointer:coarse){body{cursor:auto;}}
+  [data-burger]{display:none;width:46px;height:40px;flex-direction:column;align-items:center;justify-content:center;gap:6px;background:none;border:none;padding:0;cursor:none;}
+  [data-burger] span{display:block;width:26px;height:2px;background:#17150f;border-radius:2px;}
+  [data-mobilemenu]{position:fixed;inset:0;z-index:60;background:#ece7df;transform:translateY(-100%);transition:transform .6s cubic-bezier(.76,0,.24,1);display:flex;flex-direction:column;}
+  [data-mobilemenu].open{transform:translateY(0);}
+  [data-menuclose]{width:46px;height:46px;position:relative;background:none;border:none;padding:0;cursor:none;}
+  [data-menuclose]::before,[data-menuclose]::after{content:'';position:absolute;left:11px;top:22px;width:24px;height:2px;background:#17150f;border-radius:2px;}
+  [data-menuclose]::before{transform:rotate(45deg);}
+  [data-menuclose]::after{transform:rotate(-45deg);}
+  @media (max-width:860px){ [data-navlinks]{display:none !important;} [data-burger]{display:flex !important;} }
+  @media (min-width:861px){ [data-mobilemenu]{display:none !important;} }
+  [data-talk]::before{content:'';position:absolute;inset:0;background:#2b29ff;border-radius:100px;transform:translateY(101%);z-index:-1;transition:transform .5s cubic-bezier(.76,0,.24,1);}
+  [data-talk]:hover{color:#ece7df !important;border-color:#2b29ff !important;}
+  [data-talk]:hover::before{transform:translateY(0);}
+</style>
+</helmet>
+
+<div ref="{{ dotRef }}" style="position:fixed;top:0;left:0;width:9px;height:9px;background:#2b29ff;border:1.5px solid transparent;box-sizing:border-box;border-radius:50%;z-index:9998;pointer-events:none;will-change:transform;transition:width .32s cubic-bezier(.16,1,.3,1),height .32s cubic-bezier(.16,1,.3,1),background-color .32s ease,border-color .32s ease;"></div>
+
+<nav style="position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,4vw,56px);background:rgba(236,231,223,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(23,21,15,.08);">
+  <a href="Portfolio.dc.html" data-cursor="" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:23px;letter-spacing:-.03em;color:#17150f;text-decoration:none;">MAXIM FEDOROV<span style="color:#2b29ff;">.</span></a>
+  <div data-navlinks="" style="display:flex;align-items:center;gap:clamp(18px,3vw,40px);">
+    <a href="Projects.dc.html" data-cursor="" style="font-family:'Hanken Grotesk';font-weight:500;font-size:14px;color:#17150f;text-decoration:none;">Projects</a>
+    <a href="Connect.dc.html" data-cursor="" data-talk="" style="position:relative;overflow:hidden;isolation:isolate;font-family:'Hanken Grotesk';font-weight:600;font-size:14px;color:#17150f;text-decoration:none;border:1px solid rgba(23,21,15,.32);padding:9px 18px;border-radius:100px;transition:color .45s cubic-bezier(.76,0,.24,1),border-color .45s cubic-bezier(.76,0,.24,1);">Let’s talk</a>
+  </div>
+  <button ref="{{ burgerRef }}" data-burger="" data-cursor="" aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div ref="{{ mobileMenuRef }}" data-mobilemenu="">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,4vw,56px);border-bottom:1px solid rgba(23,21,15,.08);">
+    <a href="Portfolio.dc.html" data-cursor="" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:23px;letter-spacing:-.03em;color:#17150f;text-decoration:none;">MAXIM FEDOROV<span style="color:#2b29ff;">.</span></a>
+    <button ref="{{ menuCloseRef }}" data-menuclose="" data-cursor="" aria-label="Close menu"></button>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(6px,1.5vh,14px);padding:0 clamp(20px,7vw,56px);">
+    <a href="Projects.dc.html" data-cursor="" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(40px,12vw,72px);letter-spacing:-.03em;color:#17150f;text-decoration:none;line-height:1.05;">Projects</a>
+    <a href="Connect.dc.html" data-cursor="" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(40px,12vw,72px);letter-spacing:-.03em;color:#2b29ff;text-decoration:none;line-height:1.05;">Let’s talk</a>
+  </div>
+  <div style="padding:clamp(20px,4vw,40px) clamp(20px,7vw,56px);border-top:1px solid rgba(23,21,15,.08);display:flex;gap:22px;flex-wrap:wrap;">
+    <a href="https://t.me/" data-cursor="" style="font-family:'Hanken Grotesk';font-size:14px;color:rgba(23,21,15,.6);text-decoration:none;">Telegram</a>
+    <a href="#" data-cursor="" style="font-family:'Hanken Grotesk';font-size:14px;color:rgba(23,21,15,.6);text-decoration:none;">LinkedIn</a>
+    <a href="#" data-cursor="" style="font-family:'Hanken Grotesk';font-size:14px;color:rgba(23,21,15,.6);text-decoration:none;">Behance</a>
+  </div>
+</div>
+
+<header style="position:relative;z-index:10;padding:clamp(120px,17vh,200px) clamp(20px,4vw,56px) clamp(36px,5vh,56px);">
+  <a href="Projects.dc.html" data-cursor="" data-reveal="" style="display:inline-flex;align-items:center;gap:8px;transform:translateY(20px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);font-family:'Hanken Grotesk';font-weight:500;font-size:13px;letter-spacing:.04em;color:rgba(23,21,15,.55);text-decoration:none;"><span style="font-size:1.1em;">←</span> Back to all projects</a>
+  <div data-reveal="" style="margin-top:clamp(24px,4vh,40px);transform:translateY(40px);transition:opacity 1s cubic-bezier(.16,1,.3,1) .05s,transform 1s cubic-bezier(.16,1,.3,1) .05s;">
+    <span style="font-family:'Hanken Grotesk';font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#2b29ff;">UX/UI · User Flow</span>
+    <h1 style="margin:14px 0 0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(48px,11vw,180px);line-height:.86;letter-spacing:-.04em;">GAMLY</h1>
+    <p style="margin:clamp(20px,3vh,32px) 0 0;max-width:660px;font-family:'Bricolage Grotesque',sans-serif;font-weight:500;font-size:clamp(20px,2.6vw,34px);line-height:1.18;letter-spacing:-.02em;color:rgba(23,21,15,.78);text-wrap:balance;">Account replenishment flow — designing the account replenishment process.</p>
+  </div>
+  <div data-reveal="" style="display:flex;flex-wrap:wrap;gap:clamp(28px,5vw,72px);align-items:flex-end;margin-top:clamp(40px,6vh,72px);padding-top:28px;border-top:1px solid rgba(23,21,15,.16);transform:translateY(40px);transition:opacity 1s cubic-bezier(.16,1,.3,1) .1s,transform 1s cubic-bezier(.16,1,.3,1) .1s;">
+    <div><div style="font-family:'Hanken Grotesk';font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(23,21,15,.45);margin-bottom:8px;">Role</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:18px;">UX/UI Designer</div></div>
+    <div><div style="font-family:'Hanken Grotesk';font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(23,21,15,.45);margin-bottom:8px;">Duration</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:18px;">2 weeks</div></div>
+    <div><div style="font-family:'Hanken Grotesk';font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:rgba(23,21,15,.45);margin-bottom:8px;">Year</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:18px;">2024</div></div>
+  </div>
+</header>
+
+<section style="position:relative;z-index:10;padding:clamp(20px,3vh,40px) clamp(20px,4vw,56px) clamp(40px,6vh,80px);">
+  <div data-reveal="" style="transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:3975/2286;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);">
+    <span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — overview</span>
+    <img loading="lazy" src="https://framerusercontent.com/images/4Mm8hwUnRADfRGPHyRnu3OduMs0.png?scale-down-to=2048&amp;width=3975&amp;height=2286" alt="GAMLY — overview" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:clamp(20px,3vw,40px);margin-top:clamp(20px,3vw,40px);">
+    <div data-reveal="" style="transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:1024/768;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);">
+      <span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — screen</span>
+      <img loading="lazy" src="https://framerusercontent.com/images/F6V9KyKQraZwX4oUFJkOxHagI.png?width=2400" alt="GAMLY — screen" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+    </div>
+    <div data-reveal="" style="transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1) .06s,transform 1s cubic-bezier(.16,1,.3,1) .06s;position:relative;aspect-ratio:1024/734;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);">
+      <span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — screen</span>
+      <img loading="lazy" src="https://framerusercontent.com/images/6Iq98tT5OY9GKIfAqpiN5ewPY.png?width=2400" alt="GAMLY — screen" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+    </div>
+  </div>
+</section>
+
+<section style="position:relative;z-index:10;padding:clamp(40px,6vh,80px) clamp(20px,4vw,56px);">
+  <div data-reveal="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(28px,4vw,64px);align-items:start;transform:translateY(40px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);">
+    <div style="display:flex;gap:16px;align-items:baseline;"><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(15px,1.5vw,18px);color:#2b29ff;">01</span><h2 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(26px,3.4vw,44px);line-height:1.04;letter-spacing:-.025em;">Overall</h2></div>
+    <p style="margin:0;font-family:'Hanken Grotesk';font-size:clamp(16px,1.4vw,19px);line-height:1.6;color:rgba(23,21,15,.7);max-width:62ch;">Gamly is an online store of digital goods. You can use it to top up Steam or other services. Payment is made through the internal currency Gamly Coin. The user may not have enough Gamly Coin to make a purchase.</p>
+  </div>
+</section>
+
+<section style="position:relative;z-index:10;padding:clamp(40px,6vh,80px) clamp(20px,4vw,56px);">
+  <div data-reveal="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(28px,4vw,64px);align-items:start;transform:translateY(40px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);">
+    <div style="display:flex;gap:16px;align-items:baseline;"><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(15px,1.5vw,18px);color:#2b29ff;">02</span><h2 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(26px,3.4vw,44px);line-height:1.04;letter-spacing:-.025em;">The task</h2></div>
+    <p style="margin:0;font-family:'Hanken Grotesk';font-size:clamp(16px,1.4vw,19px);line-height:1.6;color:rgba(23,21,15,.7);max-width:62ch;">The task is to design a flow of the user’s interaction with the service after clicking the “refund Steam” button.</p>
+  </div>
+</section>
+
+<section style="position:relative;z-index:10;padding:clamp(40px,6vh,80px) clamp(20px,4vw,56px) clamp(20px,3vh,36px);">
+  <div data-reveal="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(28px,4vw,64px);align-items:start;transform:translateY(40px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);">
+    <div style="display:flex;gap:16px;align-items:baseline;"><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(15px,1.5vw,18px);color:#2b29ff;">03</span><h2 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(26px,3.4vw,44px);line-height:1.04;letter-spacing:-.025em;">References</h2></div>
+    <p style="margin:0;font-family:'Hanken Grotesk';font-size:clamp(16px,1.4vw,19px);line-height:1.6;color:rgba(23,21,15,.7);max-width:62ch;">To begin with, I carefully studied the analogues to better understand the trends in this area.</p>
+  </div>
+  <div data-reveal="" style="margin-top:clamp(28px,4vh,52px);transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:2048/785;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);">
+    <span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — references</span>
+    <img loading="lazy" src="https://framerusercontent.com/images/htmObWKwO3YLnmlqKHjBARIMWQ.png?width=2400" alt="GAMLY — references" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+  </div>
+</section>
+
+<section style="position:relative;z-index:10;padding:clamp(40px,6vh,80px) clamp(20px,4vw,56px) clamp(20px,3vh,36px);">
+  <div data-reveal="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(28px,4vw,64px);align-items:start;transform:translateY(40px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);">
+    <div style="display:flex;gap:16px;align-items:baseline;"><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(15px,1.5vw,18px);color:#2b29ff;">04</span><h2 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(26px,3.4vw,44px);line-height:1.04;letter-spacing:-.025em;">Site-map</h2></div>
+    <p style="margin:0;font-family:'Hanken Grotesk';font-size:clamp(16px,1.4vw,19px);line-height:1.6;color:rgba(23,21,15,.7);max-width:62ch;">After the reference collection stage, I assembled a map to make it easier to work with logic of the project. You can check full version of the map <a href="https://www.figma.com/proto/VoYFKOBOwBGh8BOTzyovs5/Gamly?node-id=4070-5707&amp;t=35D2iGZYn4spMFsr-1&amp;scaling=min-zoom&amp;content-scaling=fixed&amp;page-id=4032%3A3858&amp;starting-point-node-id=4070%3A5707&amp;show-proto-sidebar=1" target="_blank" rel="noopener" data-cursor="" style="color:#2b29ff;font-weight:600;text-decoration:none;border-bottom:1px solid rgba(43,41,255,.4);">by clicking this link</a>.</p>
+  </div>
+  <div data-reveal="" style="margin-top:clamp(28px,4vh,52px);transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:2048/1624;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);">
+    <span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — site-map</span>
+    <img loading="lazy" src="https://framerusercontent.com/images/6WG7DApZNSOAgDzQlxNk8AxSE0.png?width=2400" alt="GAMLY — site-map" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
+  </div>
+</section>
+
+<section style="position:relative;z-index:10;padding:clamp(40px,6vh,80px) clamp(20px,4vw,56px) clamp(20px,3vh,36px);">
+  <div data-reveal="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(28px,4vw,64px);align-items:start;transform:translateY(40px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);">
+    <div style="display:flex;gap:16px;align-items:baseline;"><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(15px,1.5vw,18px);color:#2b29ff;">05</span><h2 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(26px,3.4vw,44px);line-height:1.04;letter-spacing:-.025em;">Wireframing</h2></div>
+    <p style="margin:0;font-family:'Hanken Grotesk';font-size:clamp(16px,1.4vw,19px);line-height:1.6;color:rgba(23,21,15,.7);max-width:62ch;">Following the progressive JPEG method, I first created the wireframes and then moved on to creating the design itself and improving the design system.</p>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:clamp(20px,3vw,40px);margin-top:clamp(28px,4vh,52px);">
+    <div data-reveal="" style="transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:1920/900;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);"><span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — wireframe</span><img loading="lazy" src="https://framerusercontent.com/images/rBMXP7QIQrYjiS33UJEZDa96lF8.png?width=2400" alt="GAMLY — wireframe" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+    <div data-reveal="" style="transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:1920/900;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);"><span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — wireframe</span><img loading="lazy" src="https://framerusercontent.com/images/76n2DEmS0ne56yOoMLBPVcV9M4.png?width=2400" alt="GAMLY — wireframe" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+    <div data-reveal="" style="transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:1920/900;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);"><span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — wireframe</span><img loading="lazy" src="https://framerusercontent.com/images/7qhvjNowy4pDgg6LnMiHj5EqkU.png?width=2400" alt="GAMLY — wireframe" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+    <div data-reveal="" style="transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:1920/900;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);"><span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — wireframe</span><img loading="lazy" src="https://framerusercontent.com/images/E67wXqViMWCzSAZyFi94Po6oHc.png?width=2400" alt="GAMLY — wireframe" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+    <div data-reveal="" style="transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:1920/900;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);"><span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — wireframe</span><img loading="lazy" src="https://framerusercontent.com/images/9rlhFJQAJu3NzM3idrU1lUh1seE.png?width=2400" alt="GAMLY — wireframe" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+  </div>
+</section>
+
+<section style="position:relative;z-index:10;padding:clamp(40px,6vh,80px) clamp(20px,4vw,56px) clamp(40px,6vh,80px);">
+  <div data-reveal="" style="margin-bottom:clamp(28px,4vh,48px);display:flex;gap:16px;align-items:baseline;transform:translateY(40px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);"><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(15px,1.5vw,18px);color:#2b29ff;">06</span><h2 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(26px,3.4vw,44px);line-height:1.04;letter-spacing:-.025em;">The design</h2></div>
+  <div style="display:flex;flex-direction:column;gap:clamp(20px,3vw,40px);">
+    <div data-reveal="" style="transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:1920/900;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);"><span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — design</span><img loading="lazy" src="https://framerusercontent.com/images/xktcMhTDV5aPZNVMLhFpYrH36Q.png?width=2400" alt="GAMLY — design" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+    <div data-reveal="" style="transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:1920/900;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);"><span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — design</span><img loading="lazy" src="https://framerusercontent.com/images/mUx3Q2LfRuI4FnB6hVzY194Cqo.png?width=2400" alt="GAMLY — design" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+    <div data-reveal="" style="transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:1920/900;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);"><span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — design</span><img loading="lazy" src="https://framerusercontent.com/images/CozOMjA5J3IPUOFVEMu38vmEXYs.png?width=2400" alt="GAMLY — design" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+    <div data-reveal="" style="transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:1920/900;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);"><span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — design</span><img loading="lazy" src="https://framerusercontent.com/images/jOkqr29YNJfq6EWnw0uY7JHQ7AE.png?width=2400" alt="GAMLY — design" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+    <div data-reveal="" style="transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:1920/900;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);"><span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — design</span><img loading="lazy" src="https://framerusercontent.com/images/UUPCB8wJv8B42u9dcW28PoSLcA0.png?width=2400" alt="GAMLY — design" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+    <div data-reveal="" style="transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:1920/900;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);"><span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — design</span><img loading="lazy" src="https://framerusercontent.com/images/21jDsTGqgfGF3O1ZpiWHrCYGj0.png?width=2400" alt="GAMLY — design" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+    <div data-reveal="" style="transform:translateY(50px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);position:relative;aspect-ratio:1920/900;border-radius:14px;overflow:hidden;box-shadow:0 24px 60px rgba(23,21,15,.14);background-color:#17150f;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.06) 0 16px,rgba(255,255,255,0) 16px 32px);"><span style="position:absolute;left:18px;top:15px;z-index:1;font-family:'Hanken Grotesk',monospace;font-weight:600;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:rgba(236,231,223,.7);">gamly — design</span><img loading="lazy" src="https://framerusercontent.com/images/XQFtAKieLTai9ZEv6m3sayTYQY.png?width=2400" alt="GAMLY — design" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;"></div>
+  </div>
+</section>
+
+<section style="position:relative;z-index:10;padding:clamp(64px,12vh,150px) clamp(20px,4vw,56px) clamp(40px,6vh,80px);text-align:center;">
+  <div data-reveal="" style="transform:translateY(40px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);">
+    <h2 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(40px,8vw,120px);line-height:.9;letter-spacing:-.04em;">Thanks for<br>watching<span style="color:#2b29ff;">!</span></h2>
+  </div>
+</section>
+
+<section style="position:relative;z-index:10;padding:clamp(40px,8vh,90px) clamp(20px,4vw,56px) clamp(40px,5vh,64px);border-top:1px solid rgba(23,21,15,.14);">
+  <a href="Projects.dc.html" data-cursor="" data-reveal="" style="display:flex;align-items:center;justify-content:space-between;gap:24px;text-decoration:none;color:#17150f;transform:translateY(40px);transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);">
+    <div>
+      <span style="font-family:'Hanken Grotesk';font-weight:500;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:rgba(23,21,15,.45);">Next</span>
+      <div style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(32px,6vw,84px);letter-spacing:-.03em;line-height:1;">All projects</div>
+    </div>
+    <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(32px,6vw,84px);color:#2b29ff;">→</span>
+  </a>
+  <div style="display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;margin-top:clamp(48px,9vh,100px);padding-top:28px;border-top:1px solid rgba(23,21,15,.14);">
+    <a href="Portfolio.dc.html" data-cursor="" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.03em;color:#17150f;text-decoration:none;">Maxim Fedorov<span style="color:#2b29ff;">.</span></a>
+    <div style="display:flex;gap:24px;">
+      <a href="https://t.me/" data-cursor="" style="font-family:'Hanken Grotesk';font-size:13px;color:rgba(23,21,15,.6);text-decoration:none;">Telegram</a>
+      <a href="#" data-cursor="" style="font-family:'Hanken Grotesk';font-size:13px;color:rgba(23,21,15,.6);text-decoration:none;">LinkedIn</a>
+      <a href="#" data-cursor="" style="font-family:'Hanken Grotesk';font-size:13px;color:rgba(23,21,15,.6);text-decoration:none;">Behance</a>
+    </div>
+    <span style="font-family:'Hanken Grotesk';font-size:13px;color:rgba(23,21,15,.4);">© 2026 — Open to work</span>
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:&quot;100%&quot;,&quot;height&quot;:&quot;100%&quot;}}">
+class Component extends DCLogic {
+  ringRef = React.createRef();
+  dotRef = React.createRef();
+  burgerRef = React.createRef();
+  mobileMenuRef = React.createRef();
+  menuCloseRef = React.createRef();
+  mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  cur = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  cScale = 1; cScaleTarget = 1;
+
+  componentDidMount() {
+    this.useCursor = !window.matchMedia('(pointer:coarse)').matches;
+    if (!this.useCursor) {
+      try { document.body.style.cursor = 'auto'; } catch (e) {}
+      if (this.ringRef.current) this.ringRef.current.style.display = 'none';
+      if (this.dotRef.current) this.dotRef.current.style.display = 'none';
+    }
+    this.onMove = (e) => { this.mouse.x = e.clientX; this.mouse.y = e.clientY; };
+    this.onOver = (e) => {
+      if (e.target.closest && e.target.closest('[data-cursor]')) {
+        const d = this.dotRef.current;
+        if (d) { d.style.width = '40px'; d.style.height = '40px'; d.style.backgroundColor = 'transparent'; d.style.borderColor = 'rgba(43,41,255,0.85)'; }
+      }
+    };
+    this.onOut = (e) => {
+      if (e.target.closest && e.target.closest('[data-cursor]')) {
+        const d = this.dotRef.current;
+        if (d) { d.style.width = '9px'; d.style.height = '9px'; d.style.backgroundColor = '#2b29ff'; d.style.borderColor = 'transparent'; }
+      }
+    };
+    document.addEventListener('mousemove', this.onMove);
+    document.addEventListener('mouseover', this.onOver);
+    document.addEventListener('mouseout', this.onOut);
+    this.setupReveal();
+    this.setupMenu();
+    this.loop = this.loop.bind(this);
+    this.raf = requestAnimationFrame(this.loop);
+  }
+
+  componentWillUnmount() {
+    cancelAnimationFrame(this.raf);
+    document.removeEventListener('mousemove', this.onMove);
+    document.removeEventListener('mouseover', this.onOver);
+    document.removeEventListener('mouseout', this.onOut);
+    if (this.checkReveal) { window.removeEventListener('scroll', this.checkReveal); window.removeEventListener('resize', this.checkReveal); }
+    try { document.body.style.cursor = 'auto'; } catch (e) {}
+  }
+
+  setupMenu() {
+    const open = () => { if (this.mobileMenuRef.current) this.mobileMenuRef.current.classList.add('open'); try { document.documentElement.style.overflow = 'hidden'; } catch (e) {} };
+    const close = () => { if (this.mobileMenuRef.current) this.mobileMenuRef.current.classList.remove('open'); try { document.documentElement.style.overflow = ''; } catch (e) {} };
+    if (this.burgerRef.current) this.burgerRef.current.addEventListener('click', open);
+    if (this.menuCloseRef.current) this.menuCloseRef.current.addEventListener('click', close);
+    if (this.mobileMenuRef.current) this.mobileMenuRef.current.querySelectorAll('a').forEach((a) => a.addEventListener('click', close));
+  }
+
+  setupReveal() {
+    this.reveals = [...document.querySelectorAll('[data-reveal]')];
+    this.checkReveal = () => {
+      const vh = window.innerHeight || 800;
+      this.reveals = this.reveals.filter((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top < vh * 0.92 && r.bottom > -40) { el.style.opacity = '1'; el.style.transform = 'none'; return false; }
+        return true;
+      });
+    };
+    window.addEventListener('scroll', this.checkReveal, { passive: true });
+    window.addEventListener('resize', this.checkReveal);
+    this.checkReveal();
+    setTimeout(this.checkReveal, 120);
+    setTimeout(this.checkReveal, 600);
+  }
+
+  loop() {
+    if (this.useCursor) {
+      this.cur.x += (this.mouse.x - this.cur.x) * 0.16;
+      this.cur.y += (this.mouse.y - this.cur.y) * 0.16;
+      if (this.dotRef.current) this.dotRef.current.style.transform = `translate(${this.mouse.x}px,${this.mouse.y}px) translate(-50%,-50%)`;
+    }
+    this.raf = requestAnimationFrame(this.loop);
+  }
+
+  renderVals() {
+    return { ringRef: this.ringRef, dotRef: this.dotRef, burgerRef: this.burgerRef, mobileMenuRef: this.mobileMenuRef, menuCloseRef: this.menuCloseRef };
+  }
+}
+</script>
+</body>
+</html>

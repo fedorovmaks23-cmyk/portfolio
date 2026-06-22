@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maxim Fedorov — UX/UI &amp; Product Designer</title>
+  <meta name="description" content="Maxim Fedorov — UX/UI and product designer. I turn complex flows into clear, motion-led interfaces for web and mobile, from the first user flow to the shipped product.">
+  <meta name="author" content="Maxim Fedorov">
+  <meta name="theme-color" content="#ece7df">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+
+  <!-- Open Graph / соцсети. ВАЖНО: для корректного превью при шеринге
+       замени og:url и og:image на абсолютные URL после деплоя,
+       напр. https://твой-домен.com/ и https://твой-домен.com/project/covers/red-barn.png -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Maxim Fedorov — UX/UI &amp; Product Designer">
+  <meta property="og:description" content="I design digital products people love. UX/UI · Product · Mobile · Web · User Flows.">
+  <meta property="og:image" content="project/covers/red-barn.png">
+  <meta property="og:url" content="/">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Maxim Fedorov — UX/UI &amp; Product Designer">
+  <meta name="twitter:description" content="I design digital products people love.">
+  <meta name="twitter:image" content="project/covers/red-barn.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/three@0.134.0/build/three.min.js"></script>
+  <style>
+    html, body { margin: 0; padding: 0; }
+    body {
+      background: #ece7df;
+      color: #17150f;
+      overflow-x: hidden;
+      cursor: none;
+      font-family: 'Hanken Grotesk', sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { cursor: none; }
+    ::selection { background: #2b29ff; color: #ece7df; }
+
+    @keyframes nord-marquee { to { transform: translateX(-50%); } }
+
+    [data-talk]::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: #2b29ff;
+      border-radius: 100px;
+      transform: translateY(101%);
+      z-index: -1;
+      transition: transform .5s cubic-bezier(.76,0,.24,1);
+    }
+    [data-talk]:hover { color: #ece7df !important; border-color: #2b29ff !important; }
+    [data-talk]:hover::before { transform: translateY(0); }
+
+    @media (pointer: coarse) {
+      body { cursor: auto; }
+      #dot-cursor { display: none !important; }
+    }
+
+    #burger {
+      display: none;
+      width: 46px;
+      height: 40px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: none;
+    }
+    #burger span {
+      display: block;
+      width: 26px;
+      height: 2px;
+      background: #17150f;
+      border-radius: 2px;
+    }
+
+    #mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 60;
+      background: #ece7df;
+      transform: translateY(-100%);
+      transition: transform .6s cubic-bezier(.76,0,.24,1);
+      display: flex;
+      flex-direction: column;
+    }
+    #mobile-menu.open { transform: translateY(0); }
+
+    #menu-close {
+      width: 46px;
+      height: 46px;
+      position: relative;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: none;
+    }
+    #menu-close::before, #menu-close::after {
+      content: '';
+      position: absolute;
+      left: 11px;
+      top: 22px;
+      width: 24px;
+      height: 2px;
+      background: #17150f;
+      border-radius: 2px;
+    }
+    #menu-close::before { transform: rotate(45deg); }
+    #menu-close::after { transform: rotate(-45deg); }
+
+    @media (max-width: 860px) {
+      nav [data-navlinks] { display: none !important; }
+      #burger { display: flex !important; }
+    }
+    @media (min-width: 861px) {
+      #mobile-menu { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="three-canvas" style="position:fixed;inset:0;width:100vw;height:100vh;z-index:2;pointer-events:none;"></canvas>
+
+<div id="dot-cursor" style="position:fixed;top:0;left:0;width:9px;height:9px;background:#2b29ff;border:1.5px solid transparent;box-sizing:border-box;border-radius:50%;z-index:9998;pointer-events:none;will-change:transform;transition:width .32s cubic-bezier(.16,1,.3,1),height .32s cubic-bezier(.16,1,.3,1),background-color .32s ease,border-color .32s ease;"></div>
+
+<div id="preview" style="position:fixed;top:0;left:0;width:340px;height:230px;z-index:60;pointer-events:none;opacity:0;will-change:transform,opacity;transition:opacity .4s cubic-bezier(.16,1,.3,1);">
+  <div id="preview-clip" style="position:absolute;inset:0;border-radius:10px;overflow:hidden;box-shadow:0 34px 90px rgba(23,21,15,0.4);clip-path:inset(100% 0% 0% 0%);transition:clip-path .72s cubic-bezier(.76,0,.24,1);">
+    <div id="preview-img" style="position:absolute;left:0;right:0;top:-14%;bottom:-14%;background-color:#2b29ff;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,.08) 0 12px,rgba(255,255,255,0) 12px 24px);will-change:transform;"></div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(23,21,15,0) 40%,rgba(23,21,15,.42) 100%);"></div>
+    <span id="preview-idx" style="position:absolute;right:16px;top:13px;font-family:'Hanken Grotesk';font-weight:600;font-size:11px;letter-spacing:.06em;color:rgba(236,231,223,.85);">(01)</span>
+    <span id="preview-label" style="position:absolute;left:18px;bottom:14px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:30px;color:#ece7df;letter-spacing:-.02em;"></span>
+  </div>
+</div>
+
+<div id="loader" style="position:fixed;inset:0;z-index:9999;background:#ece7df;display:flex;flex-direction:column;justify-content:space-between;padding:clamp(24px,4vw,56px);box-sizing:border-box;transition:transform 1.1s cubic-bezier(.85,0,.15,1);">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+    <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:22px;letter-spacing:-.03em;">MAXIM FEDOROV<span style="color:#2b29ff;">.</span></span>
+    <span style="font-family:'Hanken Grotesk';font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:rgba(23,21,15,.5);">Loading</span>
+  </div>
+  <div style="display:flex;justify-content:flex-end;align-items:flex-end;">
+    <span id="loader-counter" style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(80px,20vw,260px);line-height:.8;letter-spacing:-.05em;color:#17150f;">000</span>
+  </div>
+  <div style="height:2px;background:rgba(23,21,15,.12);position:relative;">
+    <div id="loader-bar" style="position:absolute;top:0;left:0;height:100%;width:0%;background:#2b29ff;"></div>
+  </div>
+</div>
+
+<nav style="position:fixed;top:0;left:0;right:0;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,4vw,56px);background:rgba(236,231,223,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(23,21,15,.08);">
+  <a href="index.html" data-cursor style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:23px;letter-spacing:-.03em;color:#17150f;text-decoration:none;">MAXIM FEDOROV<span style="color:#2b29ff;">.</span></a>
+  <div data-navlinks style="display:flex;align-items:center;gap:clamp(18px,3vw,40px);">
+    <a href="project/Projects.dc.html" data-cursor style="font-family:'Hanken Grotesk';font-weight:500;font-size:14px;color:#17150f;text-decoration:none;">Projects</a>
+    <a href="project/Connect.dc.html" data-cursor data-talk style="position:relative;overflow:hidden;isolation:isolate;font-family:'Hanken Grotesk';font-weight:600;font-size:14px;color:#17150f;text-decoration:none;border:1px solid rgba(23,21,15,.32);padding:9px 18px;border-radius:100px;transition:color .45s cubic-bezier(.76,0,.24,1),border-color .45s cubic-bezier(.76,0,.24,1);">Let's talk</a>
+  </div>
+  <button id="burger" data-cursor aria-label="Open menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div id="mobile-menu">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:18px clamp(20px,4vw,56px);border-bottom:1px solid rgba(23,21,15,.08);">
+    <a href="index.html" data-cursor style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:23px;letter-spacing:-.03em;color:#17150f;text-decoration:none;">MAXIM FEDOROV<span style="color:#2b29ff;">.</span></a>
+    <button id="menu-close" data-cursor aria-label="Close menu"></button>
+  </div>
+  <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(6px,1.5vh,14px);padding:0 clamp(20px,7vw,56px);">
+    <a href="project/Projects.dc.html" data-cursor style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(40px,12vw,72px);letter-spacing:-.03em;color:#17150f;text-decoration:none;line-height:1.05;">Projects</a>
+    <a href="project/Connect.dc.html" data-cursor style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(40px,12vw,72px);letter-spacing:-.03em;color:#2b29ff;text-decoration:none;line-height:1.05;">Let's talk</a>
+  </div>
+  <div style="padding:clamp(20px,4vw,40px) clamp(20px,7vw,56px);border-top:1px solid rgba(23,21,15,.08);display:flex;gap:22px;flex-wrap:wrap;">
+    <a href="https://t.me/" data-cursor style="font-family:'Hanken Grotesk';font-size:14px;color:rgba(23,21,15,.6);text-decoration:none;">Telegram</a>
+    <a href="#" data-cursor style="font-family:'Hanken Grotesk';font-size:14px;color:rgba(23,21,15,.6);text-decoration:none;">LinkedIn</a>
+    <a href="#" data-cursor style="font-family:'Hanken Grotesk';font-size:14px;color:rgba(23,21,15,.6);text-decoration:none;">Behance</a>
+  </div>
+</div>
+
+<header style="position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 clamp(20px,4vw,56px) clamp(40px,6vh,80px);box-sizing:border-box;">
+  <p data-hero style="margin:0 0 clamp(22px,4vh,44px);max-width:540px;font-family:'Hanken Grotesk';font-weight:450;font-size:clamp(15px,1.4vw,19px);line-height:1.5;color:rgba(23,21,15,.62);transform:translateY(30px);opacity:0;transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);">
+    Hi, I'm Maxim — a UX/UI &amp; product designer. I turn complex flows into clear, motion-led interfaces for web and mobile, from the first user flow to the shipped product.
+  </p>
+  <h1 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;line-height:.86;letter-spacing:-.04em;font-size:clamp(48px,11.5vw,196px);color:#17150f;">
+    <span style="display:block;overflow:hidden;padding-bottom:.06em;"><span data-hero style="display:block;transform:translateY(110%);transition:transform 1.15s cubic-bezier(.16,1,.3,1);">I design</span></span>
+    <span style="display:block;overflow:hidden;padding-bottom:.06em;"><span data-hero style="display:block;transform:translateY(110%);transition:transform 1.15s cubic-bezier(.16,1,.3,1);">digital <span style="color:#2b29ff;">products</span></span></span>
+    <span style="display:block;overflow:hidden;padding-bottom:.06em;"><span data-hero style="display:block;transform:translateY(110%);transition:transform 1.15s cubic-bezier(.16,1,.3,1);">people love.</span></span>
+  </h1>
+</header>
+
+<div style="position:relative;z-index:10;overflow:hidden;padding:clamp(26px,3.4vw,46px) 0;background:#17150f;">
+  <div style="display:flex;width:max-content;animation:nord-marquee 26s linear infinite;white-space:nowrap;">
+    <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(34px,6vw,82px);letter-spacing:-.03em;color:#ece7df;padding-right:.4em;">UX/UI <span style="color:#2b29ff;">✦</span> Product <span style="color:#2b29ff;">✦</span> Mobile <span style="color:#2b29ff;">✦</span> Web <span style="color:#2b29ff;">✦</span> User Flows <span style="color:#2b29ff;">✦</span> </span>
+    <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(34px,6vw,82px);letter-spacing:-.03em;color:#ece7df;padding-right:.4em;">UX/UI <span style="color:#2b29ff;">✦</span> Product <span style="color:#2b29ff;">✦</span> Mobile <span style="color:#2b29ff;">✦</span> Web <span style="color:#2b29ff;">✦</span> User Flows <span style="color:#2b29ff;">✦</span> </span>
+  </div>
+</div>
+
+<section id="work" style="position:relative;z-index:10;padding:clamp(80px,12vh,160px) clamp(20px,4vw,56px);">
+  <div data-reveal style="display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:clamp(40px,6vh,72px);transform:translateY(46px);opacity:0;transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);">
+    <h2 style="margin:0;font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(32px,5.2vw,76px);letter-spacing:-.035em;">Selected work</h2>
+    <span style="font-family:'Hanken Grotesk';font-weight:500;font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:rgba(23,21,15,.45);">2024 — 2026</span>
+  </div>
+  <div data-reveal style="transform:translateY(46px);opacity:0;transition:opacity 1s cubic-bezier(.16,1,.3,1),transform 1s cubic-bezier(.16,1,.3,1);">
+    <a data-project data-cursor data-name="RED BARN" data-cover="project/covers/red-barn.png" data-i="0" href="project/Red Barn.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(22px,3vw,40px) 0;border-top:1px solid rgba(23,21,15,.16);text-decoration:none;color:#17150f;transition:color .4s ease,padding-left .55s cubic-bezier(.16,1,.3,1);">
+      <span style="display:flex;align-items:baseline;gap:clamp(14px,2vw,28px);"><span style="font-family:'Hanken Grotesk';font-weight:500;font-size:13px;color:rgba(23,21,15,.4);">01</span><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(30px,5.6vw,72px);letter-spacing:-.03em;">RED BARN</span></span>
+      <span style="display:flex;align-items:center;gap:clamp(14px,2vw,28px);"><span style="font-family:'Hanken Grotesk';font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(23,21,15,.5);">UX/UI · User Flow</span><span style="font-family:'Hanken Grotesk';font-size:12px;color:rgba(23,21,15,.5);">2025</span></span>
+    </a>
+    <a data-project data-cursor data-name="Mendi" data-cover="project/covers/mendi.png" data-i="1" href="project/Mendi.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(22px,3vw,40px) 0;border-top:1px solid rgba(23,21,15,.16);text-decoration:none;color:#17150f;transition:color .4s ease,padding-left .55s cubic-bezier(.16,1,.3,1);">
+      <span style="display:flex;align-items:baseline;gap:clamp(14px,2vw,28px);"><span style="font-family:'Hanken Grotesk';font-weight:500;font-size:13px;color:rgba(23,21,15,.4);">02</span><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(30px,5.6vw,72px);letter-spacing:-.03em;">Mendi</span></span>
+      <span style="display:flex;align-items:center;gap:clamp(14px,2vw,28px);"><span style="font-family:'Hanken Grotesk';font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(23,21,15,.5);">UX/UI · Mobile App</span><span style="font-family:'Hanken Grotesk';font-size:12px;color:rgba(23,21,15,.5);">2025</span></span>
+    </a>
+    <a data-project data-cursor data-name="DineOut" data-cover="project/covers/dineout.png" data-i="2" href="project/DineOut.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(22px,3vw,40px) 0;border-top:1px solid rgba(23,21,15,.16);text-decoration:none;color:#17150f;transition:color .4s ease,padding-left .55s cubic-bezier(.16,1,.3,1);">
+      <span style="display:flex;align-items:baseline;gap:clamp(14px,2vw,28px);"><span style="font-family:'Hanken Grotesk';font-weight:500;font-size:13px;color:rgba(23,21,15,.4);">03</span><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(30px,5.6vw,72px);letter-spacing:-.03em;">DineOut</span></span>
+      <span style="display:flex;align-items:center;gap:clamp(14px,2vw,28px);"><span style="font-family:'Hanken Grotesk';font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(23,21,15,.5);">UX/UI · Mobile App</span><span style="font-family:'Hanken Grotesk';font-size:12px;color:rgba(23,21,15,.5);">2024</span></span>
+    </a>
+    <a data-project data-cursor data-name="GAMLY" data-cover="project/covers/gamly.png" data-i="3" href="project/GAMLY.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(22px,3vw,40px) 0;border-top:1px solid rgba(23,21,15,.16);text-decoration:none;color:#17150f;transition:color .4s ease,padding-left .55s cubic-bezier(.16,1,.3,1);">
+      <span style="display:flex;align-items:baseline;gap:clamp(14px,2vw,28px);"><span style="font-family:'Hanken Grotesk';font-weight:500;font-size:13px;color:rgba(23,21,15,.4);">04</span><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(30px,5.6vw,72px);letter-spacing:-.03em;">GAMLY</span></span>
+      <span style="display:flex;align-items:center;gap:clamp(14px,2vw,28px);"><span style="font-family:'Hanken Grotesk';font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(23,21,15,.5);">UX/UI · User Flow</span><span style="font-family:'Hanken Grotesk';font-size:12px;color:rgba(23,21,15,.5);">2024</span></span>
+    </a>
+    <a data-project data-cursor data-name="CHIKARUN" data-cover="project/covers/chikarun.png" data-i="4" href="project/CHIKARUN.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(22px,3vw,40px) 0;border-top:1px solid rgba(23,21,15,.16);text-decoration:none;color:#17150f;transition:color .4s ease,padding-left .55s cubic-bezier(.16,1,.3,1);">
+      <span style="display:flex;align-items:baseline;gap:clamp(14px,2vw,28px);"><span style="font-family:'Hanken Grotesk';font-weight:500;font-size:13px;color:rgba(23,21,15,.4);">05</span><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(30px,5.6vw,72px);letter-spacing:-.03em;">CHIKARUN</span></span>
+      <span style="display:flex;align-items:center;gap:clamp(14px,2vw,28px);"><span style="font-family:'Hanken Grotesk';font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(23,21,15,.5);">Special · Mini-Game</span><span style="font-family:'Hanken Grotesk';font-size:12px;color:rgba(23,21,15,.5);">2024</span></span>
+    </a>
+    <a data-project data-cursor data-name="Hermes CRM" data-cover="project/covers/hermes.png" data-i="5" href="project/Hermes CRM.dc.html" style="display:flex;align-items:center;justify-content:space-between;gap:24px;padding:clamp(22px,3vw,40px) 0;border-top:1px solid rgba(23,21,15,.16);border-bottom:1px solid rgba(23,21,15,.16);text-decoration:none;color:#17150f;transition:color .4s ease,padding-left .55s cubic-bezier(.16,1,.3,1);">
+      <span style="display:flex;align-items:baseline;gap:clamp(14px,2vw,28px);"><span style="font-family:'Hanken Grotesk';font-weight:500;font-size:13px;color:rgba(23,21,15,.4);">06</span><span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:clamp(30px,5.6vw,72px);letter-spacing:-.03em;">Hermes CRM</span></span>
+      <span style="display:flex;align-items:center;gap:clamp(14px,2vw,28px);"><span style="font-family:'Hanken Grotesk';font-weight:500;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:rgba(23,21,15,.5);">Yandex · CRM</span><span style="font-family:'Hanken Grotesk';font-size:12px;color:rgba(23,21,15,.5);">2024</span></span>
+    </a>
+    <a href="project/Projects.dc.html" data-cursor style="display:inline-flex;align-items:center;gap:12px;margin-top:clamp(28px,4vh,48px);font-family:'Hanken Grotesk';font-weight:600;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:#2b29ff;text-decoration:none;">View all 8 projects <span style="font-size:1.1em;">→</span></a>
+  </div>
+</section>
+
+<section id="about" style="position:relative;z-index:10;padding:clamp(40px,6vh,90px) clamp(20px,4vw,56px) clamp(80px,12vh,160px);">
+  <div data-reveal style="max-width:1100px;transform:translateY(46px);opacity:0;transition:opacity 1.1s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1);">
+    <span style="font-family:'Hanken Grotesk';font-weight:600;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#2b29ff;">About</span>
+    <p style="margin:24px 0 0;font-family:'Bricolage Grotesque',sans-serif;font-weight:600;font-size:clamp(27px,4.4vw,60px);line-height:1.1;letter-spacing:-.025em;text-wrap:balance;">
+      I'm a hands-on product designer who turns tangled problems into interfaces that feel <span style="color:#2b29ff;">simple</span> and <span style="color:#2b29ff;">obvious</span> — across web, mobile and special projects.
+    </p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:clamp(20px,3vw,40px);margin-top:clamp(48px,8vh,96px);">
+    <div data-reveal style="transform:translateY(46px);opacity:0;transition:opacity 1s cubic-bezier(.16,1,.3,1) .05s,transform 1s cubic-bezier(.16,1,.3,1) .05s;">
+      <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:13px;color:rgba(23,21,15,.4);">01</span>
+      <h3 style="margin:14px 0 10px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:23px;letter-spacing:-.02em;">Product &amp; UX</h3>
+      <p style="margin:0;font-family:'Hanken Grotesk';font-size:15px;line-height:1.55;color:rgba(23,21,15,.6);">Research, user flows and IA that turn complex problems into simple, confident paths.</p>
+    </div>
+    <div data-reveal style="transform:translateY(46px);opacity:0;transition:opacity 1s cubic-bezier(.16,1,.3,1) .12s,transform 1s cubic-bezier(.16,1,.3,1) .12s;">
+      <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:13px;color:rgba(23,21,15,.4);">02</span>
+      <h3 style="margin:14px 0 10px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:23px;letter-spacing:-.02em;">UI &amp; Design Systems</h3>
+      <p style="margin:0;font-family:'Hanken Grotesk';font-size:15px;line-height:1.55;color:rgba(23,21,15,.6);">Pixel-tight interfaces and scalable systems that stay consistent across web and mobile.</p>
+    </div>
+    <div data-reveal style="transform:translateY(46px);opacity:0;transition:opacity 1s cubic-bezier(.16,1,.3,1) .19s,transform 1s cubic-bezier(.16,1,.3,1) .19s;">
+      <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:13px;color:rgba(23,21,15,.4);">03</span>
+      <h3 style="margin:14px 0 10px;font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:23px;letter-spacing:-.02em;">Prototyping &amp; Motion</h3>
+      <p style="margin:0;font-family:'Hanken Grotesk';font-size:15px;line-height:1.55;color:rgba(23,21,15,.6);">Interactive prototypes and micro-interactions that make a product feel alive before a line of code.</p>
+    </div>
+  </div>
+</section>
+
+<section id="contact" style="position:relative;z-index:10;padding:clamp(80px,14vh,180px) clamp(20px,4vw,56px) clamp(40px,5vh,64px);border-top:1px solid rgba(23,21,15,.14);">
+  <div data-reveal style="transform:translateY(46px);opacity:0;transition:opacity 1.1s cubic-bezier(.16,1,.3,1),transform 1.1s cubic-bezier(.16,1,.3,1);">
+    <p style="margin:0;font-family:'Hanken Grotesk';font-weight:500;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:rgba(23,21,15,.45);">Have a project in mind?</p>
+    <h2 style="margin:18px 0 clamp(36px,6vh,64px);font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(46px,12vw,188px);line-height:.88;letter-spacing:-.045em;">Let's build<br>something <span style="color:#2b29ff;">useful</span>.</h2>
+    <a href="mailto:hello@maximfedorov.design" data-cursor data-magnetic style="display:inline-flex;align-items:center;gap:14px;font-family:'Hanken Grotesk';font-weight:600;font-size:clamp(18px,2vw,26px);color:#ece7df;background:#2b29ff;padding:18px 34px;border-radius:100px;text-decoration:none;transition:transform .5s cubic-bezier(.16,1,.3,1);">hello@maximfedorov.design <span style="font-size:1.1em;">→</span></a>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;margin-top:clamp(64px,12vh,140px);padding-top:28px;border-top:1px solid rgba(23,21,15,.14);">
+    <span style="font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:18px;letter-spacing:-.03em;">Maxim Fedorov<span style="color:#2b29ff;">.</span></span>
+    <div style="display:flex;gap:24px;">
+      <a href="https://t.me/" data-cursor style="font-family:'Hanken Grotesk';font-size:13px;color:rgba(23,21,15,.6);text-decoration:none;">Telegram</a>
+      <a href="#" data-cursor style="font-family:'Hanken Grotesk';font-size:13px;color:rgba(23,21,15,.6);text-decoration:none;">LinkedIn</a>
+      <a href="#" data-cursor style="font-family:'Hanken Grotesk';font-size:13px;color:rgba(23,21,15,.6);text-decoration:none;">Behance</a>
+    </div>
+    <span style="font-family:'Hanken Grotesk';font-size:13px;color:rgba(23,21,15,.4);">© 2026 — Open to work</span>
+  </div>
+</section>
+
+<script>
+(function () {
+  const isTouchDevice = window.matchMedia('(pointer:coarse)').matches;
+  const useCursor = !isTouchDevice;
+
+  // DOM refs
+  const dot       = document.getElementById('dot-cursor');
+  const loader    = document.getElementById('loader');
+  const counter   = document.getElementById('loader-counter');
+  const bar       = document.getElementById('loader-bar');
+  const preview   = document.getElementById('preview');
+  const previewClip  = document.getElementById('preview-clip');
+  const previewImg   = document.getElementById('preview-img');
+  const previewIdx   = document.getElementById('preview-idx');
+  const previewLabel = document.getElementById('preview-label');
+  const canvas    = document.getElementById('three-canvas');
+  const burger    = document.getElementById('burger');
+  const mobileMenu   = document.getElementById('mobile-menu');
+  const menuClose = document.getElementById('menu-close');
+
+  // State
+  const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  const pv    = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+  let pvActive = false;
+  let mAmp = 0;
+  let scrollP = 0;
+  let t = 0;
+  let spinY = 0, mxL = 0, myL = 0;
+  let blobReveal = 0, blobTarget = 0, blobBase = 1;
+  let blobX = 0, blobY = 0;
+  let isMobile = false;
+  let renderer, scene, camera, blob, uniforms;
+  let rafId;
+
+  // ── Cursor ──────────────────────────────────────────────────────────────────
+  if (!useCursor) {
+    document.body.style.cursor = 'auto';
+    if (dot) dot.style.display = 'none';
+  }
+
+  document.addEventListener('mousemove', (e) => {
+    const dx = e.clientX - mouse.x, dy = e.clientY - mouse.y;
+    mAmp = Math.min(1, mAmp + Math.sqrt(dx * dx + dy * dy) * 0.011);
+    mouse.x = e.clientX;
+    mouse.y = e.clientY;
+  });
+
+  document.addEventListener('mouseover', (e) => {
+    if (!useCursor || !dot) return;
+    if (e.target.closest && e.target.closest('[data-cursor]')) {
+      dot.style.width = '40px';
+      dot.style.height = '40px';
+      dot.style.backgroundColor = 'transparent';
+      dot.style.borderColor = 'rgba(43,41,255,0.85)';
+    }
+  });
+
+  document.addEventListener('mouseout', (e) => {
+    if (!useCursor || !dot) return;
+    if (e.target.closest && e.target.closest('[data-cursor]')) {
+      dot.style.width = '9px';
+      dot.style.height = '9px';
+      dot.style.backgroundColor = '#2b29ff';
+      dot.style.borderColor = 'transparent';
+    }
+  });
+
+  window.addEventListener('scroll', () => {
+    scrollP = Math.min(1, window.scrollY / (window.innerHeight || 1));
+  }, { passive: true });
+
+  // ── Loader ──────────────────────────────────────────────────────────────────
+  function runLoader() {
+    let internal = false;
+    try { if (document.referrer) internal = new URL(document.referrer).origin === location.origin; } catch (e) {}
+    let seen = false;
+    try { seen = sessionStorage.getItem('mf_loader_seen') === '1'; } catch (e) {}
+
+    if (internal || seen) {
+      if (loader) { loader.style.transition = 'none'; loader.style.transform = 'translateY(-100%)'; loader.style.pointerEvents = 'none'; }
+      blobTarget = 1;
+      document.querySelectorAll('[data-hero]').forEach((el) => { el.style.transform = 'translateY(0)'; el.style.opacity = '1'; });
+      return;
+    }
+
+    try { sessionStorage.setItem('mf_loader_seen', '1'); } catch (e) {}
+    let p = 0;
+    const ld = setInterval(() => {
+      p += Math.random() * 9 + 4;
+      if (p >= 100) {
+        p = 100;
+        clearInterval(ld);
+        setTimeout(finishLoad, 380);
+      }
+      if (counter) counter.textContent = String(Math.floor(p)).padStart(3, '0');
+      if (bar) bar.style.width = p + '%';
+    }, 95);
+  }
+
+  function finishLoad() {
+    if (loader) { loader.style.transform = 'translateY(-100%)'; loader.style.pointerEvents = 'none'; }
+    blobTarget = 1;
+    document.querySelectorAll('[data-hero]').forEach((el, i) => {
+      setTimeout(() => { el.style.transform = 'translateY(0)'; el.style.opacity = '1'; }, i * 95);
+    });
+  }
+
+  // ── Scroll reveal ────────────────────────────────────────────────────────────
+  function setupReveal() {
+    let reveals = [...document.querySelectorAll('[data-reveal]')];
+    function checkReveal() {
+      const vh = window.innerHeight || 800;
+      reveals = reveals.filter((el) => {
+        const r = el.getBoundingClientRect();
+        if (r.top < vh * 0.9 && r.bottom > -40) {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+          return false;
+        }
+        return true;
+      });
+    }
+    window.addEventListener('scroll', checkReveal, { passive: true });
+    window.addEventListener('resize', checkReveal);
+    checkReveal();
+    setTimeout(checkReveal, 120);
+    setTimeout(checkReveal, 700);
+  }
+
+  // ── Magnetic buttons ─────────────────────────────────────────────────────────
+  function setupMagnetic() {
+    document.querySelectorAll('[data-magnetic]').forEach((el) => {
+      el.addEventListener('mousemove', (e) => {
+        const r = el.getBoundingClientRect();
+        const mx = e.clientX - (r.left + r.width / 2);
+        const my = e.clientY - (r.top + r.height / 2);
+        el.style.transform = `translate(${mx * 0.35}px,${my * 0.5}px)`;
+      });
+      el.addEventListener('mouseleave', () => { el.style.transform = 'translate(0,0)'; });
+    });
+  }
+
+  // ── Project hover previews ───────────────────────────────────────────────────
+  function setupProjects() {
+    const rows = [...document.querySelectorAll('[data-project]')];
+    rows.forEach((row) => {
+      const i = parseInt(row.getAttribute('data-i') || '0', 10);
+      row.addEventListener('mouseenter', () => {
+        pvActive = true;
+        row.style.color = '#2b29ff';
+        row.style.paddingLeft = '22px';
+        if (previewImg) {
+          const cov = row.getAttribute('data-cover');
+          previewImg.style.backgroundImage = cov ? `url("${cov}")` : 'none';
+          previewImg.style.backgroundSize = 'cover';
+          previewImg.style.backgroundPosition = 'center';
+          previewImg.style.backgroundRepeat = 'no-repeat';
+        }
+        if (previewLabel) previewLabel.textContent = row.getAttribute('data-name') || '';
+        if (previewIdx) previewIdx.textContent = '(' + String(i + 1).padStart(2, '0') + ')';
+        if (preview) preview.style.opacity = '1';
+        if (previewClip) previewClip.style.clipPath = 'inset(0% 0% 0% 0%)';
+        rows.forEach((r) => { if (r !== row) r.style.opacity = '0.34'; });
+      });
+      row.addEventListener('mouseleave', () => {
+        pvActive = false;
+        row.style.color = '#17150f';
+        row.style.paddingLeft = '0px';
+        if (preview) preview.style.opacity = '0';
+        if (previewClip) previewClip.style.clipPath = 'inset(100% 0% 0% 0%)';
+        rows.forEach((r) => { r.style.opacity = '1'; });
+      });
+    });
+  }
+
+  // ── Mobile menu ──────────────────────────────────────────────────────────────
+  function setupMenu() {
+    const open  = () => { mobileMenu && mobileMenu.classList.add('open'); document.documentElement.style.overflow = 'hidden'; };
+    const close = () => { mobileMenu && mobileMenu.classList.remove('open'); document.documentElement.style.overflow = ''; };
+    if (burger) burger.addEventListener('click', open);
+    if (menuClose) menuClose.addEventListener('click', close);
+    if (mobileMenu) mobileMenu.querySelectorAll('a').forEach((a) => a.addEventListener('click', close));
+  }
+
+  // ── Three.js WebGL blob ───────────────────────────────────────────────────────
+  const SNOISE = `
+    vec3 mod289(vec3 x){return x - floor(x*(1.0/289.0))*289.0;}
+    vec4 mod289(vec4 x){return x - floor(x*(1.0/289.0))*289.0;}
+    vec4 permute(vec4 x){return mod289(((x*34.0)+1.0)*x);}
+    vec4 taylorInvSqrt(vec4 r){return 1.79284291400159 - 0.85373472095314 * r;}
+    float snoise(vec3 v){
+      const vec2 C = vec2(1.0/6.0, 1.0/3.0);
+      const vec4 D = vec4(0.0, 0.5, 1.0, 2.0);
+      vec3 i  = floor(v + dot(v, C.yyy));
+      vec3 x0 = v - i + dot(i, C.xxx);
+      vec3 g = step(x0.yzx, x0.xyz);
+      vec3 l = 1.0 - g;
+      vec3 i1 = min(g.xyz, l.zxy);
+      vec3 i2 = max(g.xyz, l.zxy);
+      vec3 x1 = x0 - i1 + C.xxx;
+      vec3 x2 = x0 - i2 + C.yyy;
+      vec3 x3 = x0 - D.yyy;
+      i = mod289(i);
+      vec4 p = permute(permute(permute(
+                i.z + vec4(0.0, i1.z, i2.z, 1.0))
+              + i.y + vec4(0.0, i1.y, i2.y, 1.0))
+              + i.x + vec4(0.0, i1.x, i2.x, 1.0));
+      float n_ = 0.142857142857;
+      vec3 ns = n_ * D.wyz - D.xzx;
+      vec4 j = p - 49.0 * floor(p * ns.z * ns.z);
+      vec4 x_ = floor(j * ns.z);
+      vec4 y_ = floor(j - 7.0 * x_);
+      vec4 x = x_ * ns.x + ns.yyyy;
+      vec4 y = y_ * ns.x + ns.yyyy;
+      vec4 h = 1.0 - abs(x) - abs(y);
+      vec4 b0 = vec4(x.xy, y.xy);
+      vec4 b1 = vec4(x.zw, y.zw);
+      vec4 s0 = floor(b0)*2.0 + 1.0;
+      vec4 s1 = floor(b1)*2.0 + 1.0;
+      vec4 sh = -step(h, vec4(0.0));
+      vec4 a0 = b0.xzyw + s0.xzyw*sh.xxyy;
+      vec4 a1 = b1.xzyw + s1.xzyw*sh.zzww;
+      vec3 p0 = vec3(a0.xy, h.x);
+      vec3 p1 = vec3(a0.zw, h.y);
+      vec3 p2 = vec3(a1.xy, h.z);
+      vec3 p3 = vec3(a1.zw, h.w);
+      vec4 norm = taylorInvSqrt(vec4(dot(p0,p0), dot(p1,p1), dot(p2,p2), dot(p3,p3)));
+      p0 *= norm.x; p1 *= norm.y; p2 *= norm.z; p3 *= norm.w;
+      vec4 m = max(0.6 - vec4(dot(x0,x0), dot(x1,x1), dot(x2,x2), dot(x3,x3)), 0.0);
+      m = m * m;
+      return 42.0 * dot(m*m, vec4(dot(p0,x0), dot(p1,x1), dot(p2,x2), dot(p3,x3)));
+    }`;
+
+  const VERT = SNOISE + `
+    uniform float uTime; uniform float uAmp;
+    varying float vNoise; varying vec3 vNormal; varying vec3 vView; varying vec3 vPos;
+    void main(){
+      vec3 p = position;
+      float n  = snoise(p * 1.1 + vec3(0.0, uTime * 0.18, 0.0));
+      float n2 = snoise(p * 2.6 + vec3(uTime * 0.28));
+      float disp = (n * 0.62 + n2 * 0.38) * uAmp;
+      p += normal * disp;
+      vNoise = n;
+      vNormal = normalize(normalMatrix * normal);
+      vec4 mv = modelViewMatrix * vec4(p, 1.0);
+      vView = normalize(-mv.xyz);
+      vPos = p;
+      gl_Position = projectionMatrix * mv;
+    }`;
+
+  const FRAG = `
+    precision highp float;
+    uniform float uTime; uniform vec3 uColA; uniform vec3 uColB; uniform vec3 uColC; uniform vec3 uRim;
+    varying float vNoise; varying vec3 vNormal; varying vec3 vView; varying vec3 vPos;
+    void main(){
+      vec3 N = normalize(vNormal); vec3 V = normalize(vView);
+      float fres = pow(1.0 - max(dot(N, V), 0.0), 2.0);
+      float m = smoothstep(-0.7, 0.7, vNoise + sin(uTime * 0.3 + vPos.y * 1.6) * 0.3);
+      vec3 base = mix(uColA, uColB, m);
+      float g = smoothstep(-0.4, 0.9, sin(uTime * 0.42 + vPos.x * 2.0 + vPos.z));
+      base = mix(base, uColC, g * 0.6);
+      vec3 col = mix(base, uRim, smoothstep(0.45, 1.0, fres));
+      float spec = pow(max(fres, 0.0), 6.0);
+      col += vec3(1.0, 0.97, 0.9) * spec * 0.55;
+      gl_FragColor = vec4(col, 1.0);
+    }`;
+
+  function initThree() {
+    if (!window.THREE) { setTimeout(initThree, 50); return; }
+    const THREE = window.THREE;
+    renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+    renderer.setClearColor(0x000000, 0);
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.z = 4.2;
+    uniforms = {
+      uTime: { value: 0 },
+      uAmp:  { value: 0 },
+      uColA: { value: new THREE.Color('#2b29ff') },
+      uColB: { value: new THREE.Color('#ff5fa2') },
+      uColC: { value: new THREE.Color('#ffcf6b') },
+      uRim:  { value: new THREE.Color('#141226') }
+    };
+    const mat = new THREE.ShaderMaterial({ uniforms, vertexShader: VERT, fragmentShader: FRAG });
+    blob = new THREE.Mesh(new THREE.IcosahedronGeometry(1.25, 24), mat);
+    scene.add(blob);
+    resizeThree();
+  }
+
+  function resizeThree() {
+    if (!renderer) return;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.75));
+    renderer.setSize(window.innerWidth, window.innerHeight, false);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    isMobile = window.innerWidth < 760;
+    blobBase = isMobile ? 0.46 : (window.innerWidth < 1200 ? 0.7 : 0.9);
+    const halfH = Math.tan((45 * Math.PI / 180) / 2) * camera.position.z;
+    const halfW = halfH * camera.aspect;
+    blobX = isMobile ? -halfW * 0.04 : halfW * 0.52;
+    blobY = isMobile ? halfH * 0.34 : -halfH * 0.02;
+  }
+
+  // ── Main loop ────────────────────────────────────────────────────────────────
+  function loop() {
+    t += 0.006;
+
+    // Cursor dot follows mouse exactly
+    if (useCursor && dot) {
+      dot.style.transform = `translate(${mouse.x}px,${mouse.y}px) translate(-50%,-50%)`;
+    }
+
+    // Preview card follows with lag
+    pv.x += (mouse.x - pv.x) * 0.13;
+    pv.y += (mouse.y - pv.y) * 0.13;
+    if (preview && pvActive) {
+      const vx = mouse.x - pv.x;
+      const vy = mouse.y - pv.y;
+      const tilt = vx * 0.05;
+      const skew = Math.max(-9, Math.min(9, vx * 0.16));
+      preview.style.transform = `translate(${pv.x + 70}px,${pv.y}px) translate(-50%,-50%) rotate(${tilt}deg) skewX(${skew}deg)`;
+      if (previewImg) {
+        previewImg.style.transform = `translate(${vx * -0.08}px,${vy * -0.12}px) scale(1.08)`;
+      }
+    }
+
+    // WebGL blob
+    if (renderer && blob) {
+      uniforms.uTime.value = t * 1.7;
+      blobReveal += (blobTarget - blobReveal) * 0.045;
+      uniforms.uAmp.value = ((isMobile ? 0.15 : 0.3) + mAmp * (isMobile ? 0.22 : 0.5)) * blobReveal;
+      spinY += 0.0026;
+      const ty = (mouse.x / window.innerWidth - 0.5);
+      const tx = (mouse.y / window.innerHeight - 0.5);
+      mxL += (ty - mxL) * 0.05;
+      myL += (tx - myL) * 0.05;
+      blob.rotation.set(myL * 0.7, spinY + mxL * 0.9, 0);
+      const sc = blobBase * (0.12 + 0.88 * blobReveal) * (1 - scrollP * 0.22);
+      blob.scale.setScalar(Math.max(0.0001, sc));
+      blob.position.set(blobX, blobY + scrollP * 1.1, 0);
+      mAmp *= 0.93;
+      renderer.render(scene, camera);
+    }
+
+    rafId = requestAnimationFrame(loop);
+  }
+
+  // ── Init ─────────────────────────────────────────────────────────────────────
+  window.addEventListener('resize', resizeThree);
+  initThree();
+  runLoader();
+  setupReveal();
+  setupMagnetic();
+  setupProjects();
+  setupMenu();
+  loop();
+})();
+</script>
+</body>
+</html>
